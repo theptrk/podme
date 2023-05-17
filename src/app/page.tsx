@@ -1,6 +1,60 @@
-import Image from 'next/image'
+"use client";
 
+import Image from "next/image";
+import { useState } from "react";
+
+function Tag(props: {
+  setCurrentTopic: (arg0: string) => void;
+  tagText: string;
+  colors: string;
+}) {
+  let colors = props.colors || "text-pink-600 bg-pink-200";
+  return (
+    <span
+      onClick={() => props.setCurrentTopic(props.tagText)}
+      className={`text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full last:mr-0 mr-1 cursor-pointer ${colors}`}
+    >
+      #{props.tagText}
+    </span>
+  );
+}
 export default function Home() {
+  const [currentTopic, setCurrentTopic] = useState("");
+  return (
+    <main className="flex flex-col items-center">
+      <h2>Topics</h2>
+      <div>
+        <Tag
+          setCurrentTopic={setCurrentTopic}
+          tagText="breakfast"
+          colors="text-pink-600 bg-pink-200 "
+        />
+        <Tag
+          setCurrentTopic={setCurrentTopic}
+          tagText="bagels"
+          colors="text-white bg-gradient-to-r from-cyan-500 to-blue-500"
+        />
+        <Tag
+          setCurrentTopic={setCurrentTopic}
+          tagText="donuts"
+          colors="text-white bg-gradient-to-r to-slate-800 from-blue-500"
+        />
+        <Tag
+          setCurrentTopic={setCurrentTopic}
+          tagText="dogs"
+          colors="text-white bg-slate-600"
+        />
+      </div>
+      <div>
+        This is a placeholder
+        <div>what do I put in here?</div>
+        <div>Current Topic: {currentTopic}</div>
+      </div>
+    </main>
+  );
+}
+
+export function HomeOld() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -15,7 +69,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -47,7 +101,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
+            Docs{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -64,7 +118,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
+            Learn{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -81,7 +135,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
+            Templates{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -98,7 +152,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
+            Deploy{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -109,5 +163,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
