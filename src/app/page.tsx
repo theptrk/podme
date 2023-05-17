@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function getRandomElement(list) {
   const randomIndex = Math.floor(Math.random() * list.length);
@@ -45,8 +45,7 @@ interface PassageObject {
   episode: string;
 }
 
-export default function Home() {
-  const [currentTopic, setCurrentTopic] = useState("");
+function getData() {
   const topicObjects = {
     breakfast: [
       {
@@ -80,6 +79,17 @@ export default function Home() {
       },
     ],
   };
+  return Promise.resolve(topicObjects);
+}
+
+export default function Home() {
+  const [currentTopic, setCurrentTopic] = useState("");
+  const [topicObjects, setTopicObjects] = useState({});
+  useEffect(() => {
+    getData().then((data) => {
+      setTopicObjects(data);
+    });
+  }, []);
   let topics = Object.keys(topicObjects);
   let topicPassages = [];
   if (currentTopic !== "" && topicObjects[currentTopic] !== undefined) {
