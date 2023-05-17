@@ -3,12 +3,21 @@
 import Image from "next/image";
 import { useState } from "react";
 
+function getRandomElement(list) {
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+}
 function Tag(props: {
   setCurrentTopic: (arg0: string) => void;
   tagText: string;
-  colors: string;
+  colors?: string;
 }) {
-  let colors = props.colors || "text-pink-600 bg-pink-200";
+  let colorOptions = [
+    "text-pink-600 bg-pink-200",
+    // "text-white bg-gradient-to-r from-cyan-500 to-blue-500",
+    // "text-white bg-gradient-to-r to-green-500 from-green-800",
+  ];
+  let colors = props.colors || getRandomElement(colorOptions);
   return (
     <span
       onClick={() => props.setCurrentTopic(props.tagText)}
@@ -18,37 +27,84 @@ function Tag(props: {
     </span>
   );
 }
+function Passage(props: { passage: PassageObject }) {
+  return (
+    <div className="flex flex-col mt-5">
+      <div>
+        <strong>{props.passage.podcast} - </strong>
+        {props.passage.episode}
+      </div>
+      <div>transcript: {props.passage.transcript}</div>
+    </div>
+  );
+}
+
+interface PassageObject {
+  transcript: string;
+  podcast: string;
+  episode: string;
+}
+
 export default function Home() {
   const [currentTopic, setCurrentTopic] = useState("");
+  const topicObjects = {
+    breakfast: [
+      {
+        transcript: "I had a bagel for breakfast",
+        podcast: "The Daily",
+        episode: "The Daily Episode 1",
+      },
+      {
+        transcript: "I had a donut for breakfast",
+        podcast: "The Weekly",
+        episode: "The Weekly Episode 88",
+      },
+    ],
+    lunch: [
+      {
+        transcript: "I had a bagel for lunch",
+        podcast: "The Daily",
+        episode: "The Daily Episode 1",
+      },
+      {
+        transcript: "I had a donut for lunch",
+        podcast: "The Weekly",
+        episode: "The Weekly Episode 88",
+      },
+    ],
+    dinner: [
+      {
+        transcript: "Do you want to get dinner?",
+        podcast: "The All In Podcast",
+        episode: "The All In Podcast Episode 1000",
+      },
+    ],
+  };
+  let topics = Object.keys(topicObjects);
+  let topicPassages = [];
+  if (currentTopic !== "" && topicObjects[currentTopic] !== undefined) {
+    topicPassages = topicObjects[currentTopic];
+  }
+  // let topicPassages = currentTopic === "" ? [] : topicObjects[currentTopic];
   return (
     <main className="flex flex-col items-center">
-      <h2>Topics</h2>
-      <div>
-        <Tag
-          setCurrentTopic={setCurrentTopic}
-          tagText="breakfast"
-          colors="text-pink-600 bg-pink-200 "
-        />
-        <Tag
-          setCurrentTopic={setCurrentTopic}
-          tagText="bagels"
-          colors="text-white bg-gradient-to-r from-cyan-500 to-blue-500"
-        />
-        <Tag
-          setCurrentTopic={setCurrentTopic}
-          tagText="donuts"
-          colors="text-white bg-gradient-to-r to-slate-800 from-blue-500"
-        />
-        <Tag
-          setCurrentTopic={setCurrentTopic}
-          tagText="dogs"
-          colors="text-white bg-slate-600"
-        />
-      </div>
-      <div>
-        This is a placeholder
-        <div>what do I put in here?</div>
-        <div>Current Topic: {currentTopic}</div>
+      <div className="w-3/4 max-w-screen-xl">
+        <h2 className="text-xl">Topics</h2>
+        {topics.map((topic) => {
+          return (
+            <Tag
+              setCurrentTopic={setCurrentTopic}
+              tagText={topic}
+              key={topic}
+            />
+          );
+        })}
+        <h3>
+          Passages for <strong>#{currentTopic}</strong>
+        </h3>
+        {topicPassages.map((passage: PassageObject, i: number) => {
+          return <Passage passage={passage} key={i} />;
+        })}
       </div>
     </main>
   );
