@@ -13,10 +13,17 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const logo = "I didn't say that!";
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div>this is the nav</div>
+        <div className="flex flex-col items-center">
+          <div className="mt-3 mb-3 w-3/4">
+            <h1 className="text-2xl">
+              <strong>{logo}</strong>️
+            </h1>
+          </div>
+        </div>
         {children}
       </body>
     </html>

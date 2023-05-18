@@ -90,6 +90,30 @@ export default function Home() {
       setTopicObjects(data);
     });
   }, []);
+
+  useEffect(() => {
+    console.log("kale kale content view loaded");
+
+    fetch("http://10.10.245.96::8080/get_summarized_topics/", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ videoid: "2SORT6-Fv8s" }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the response data
+        console.log("KALE");
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error:", error);
+      });
+  }, []);
+
   let topics = Object.keys(topicObjects);
   let topicPassages = [];
   if (currentTopic !== "" && topicObjects[currentTopic] !== undefined) {
